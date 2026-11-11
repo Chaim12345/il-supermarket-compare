@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -67,7 +68,12 @@ func Run(ctx context.Context, db *store.DB, geocoder *geo.Geocoder, opt Options)
 					city = name
 				}
 			}
+			// Some chains (e.g. yohananof) leave City empty or "0" and put the
+			// locality in the store name; recover it so the branch can be placed.
 			if city == "" || isDigits(city) {
+				city = localityFromName(s.Name)
+			}
+			if city == "" {
 				continue // no usable city, cannot place it
 			}
 			row := store.StoreRow{
@@ -139,6 +145,20 @@ func writeJSONFile(path string, v any) error {
 	defer f.Close()
 	return json.NewEncoder(f).Encode(v)
 }
+
+// localityFromName recovers a locality from a store name when the chain does not
+// provide a city. It strips the banner prefix and common branch suffixes, leaving
+// the place name ("יוחננוף מפוח" -> "מפוח", "יוחננוף אור יהודה" -> "אור יהודה").
+func localityFromName(name string) string {
+	name = strings.TrimSpace(storeNameStripRe.ReplaceAllString(name, " "))
+	name = strings.TrimSpace(branchSuffixRe.ReplaceAllString(name, " "))
+	return strings.TrimSpace(strings.Join(strings.Fields(name), " "))
+}
+
+var (
+	storeNameStripRe = regexp.MustCompile(`^(יוחננוף|רמי לוי|שופרסל|קרפור|אושר עד|טיב טעם|קשת|פרשמרקט|פוליצר|סטופ מרקט|סאלח)\s*`)
+	branchSuffixRe   = regexp.MustCompile(`(סניף|ישן|חדש|גדול|קטן|המרכזי|מרכז|mall|מול|סטאר סנטר|סנטר|ביג|גרנד|פארק|סיטי|ישפרו|כרמים|נוי|הדר)`)
+)
 
 func isDigits(s string) bool {
 	if s == "" {
