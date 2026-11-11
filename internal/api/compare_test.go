@@ -97,3 +97,16 @@ func TestCompareBasket(t *testing.T) {
 		t.Errorf("missing = %v", res[1].Missing)
 	}
 }
+
+// A store with every item found must still report an empty (non-nil) missing
+// slice, so the JSON field is [] and not null for the frontend.
+func TestCompareMissingNeverNull(t *testing.T) {
+	stores := []store.StoreRow{{ID: "a:1", Chain: "a", Name: "x"}}
+	prices := map[string]map[string]store.PriceRow{
+		"a:1": {"milk": {ItemID: "milk", Price: 6.5, ProductName: "חלב"}},
+	}
+	res := Compare(stores, prices, []BasketLine{{ItemID: "milk", Qty: 1}})
+	if res[0].Missing == nil {
+		t.Fatal("Missing is nil; JSON would encode as null")
+	}
+}

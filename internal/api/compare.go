@@ -105,6 +105,7 @@ func Compare(stores []store.StoreRow, prices map[string]map[string]store.PriceRo
 		res := StoreResult{
 			StoreID: s.ID, Chain: s.Chain, Name: s.Name, Address: s.Address,
 			City: s.City, Km: 0, Approx: s.Approx, Lines: map[string]LineRes{},
+			Missing: []string{},
 		}
 		for _, line := range lines {
 			ci := catalogByID(line.ItemID)
