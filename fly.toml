@@ -1,0 +1,26 @@
+app = "il-supermarket-compare"
+primary_region = "fra"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  DB_PATH = "/data/prices.db"
+  STATIC_DIR = "/app/web/dist"
+  ADDR = ":8080"
+  SELF_REFRESH = "1"
+
+[[mounts]]
+  source = "prices"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>השוואת מחירי סופרמרקט</title>
+    <meta name="description" content="השוו את סל הקניות שלכם בין הסופרמרקטים הזולים ביותר ליד הכתובת שלכם, לפי מחירי היום." />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="wrap">
+        <h1>סל קניות — השוואת מחירים</h1>
+        <p class="tagline">מחירי היום מהקבצים הרשמיים של הרשתות (חוק שקיפות מחירים).</p>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="panel" aria-label="חיפוש">
+        <div class="row">
+          <label class="field grow">
+            <span>כתובת (רחוב ומספר, עיר)</span>
+            <input id="address" type="text" value="הרצל 1, רמת גן" autocomplete="street-address" />
+          </label>
+          <label class="field">
+            <span>רדיוס (ק״מ)</span>
+            <input id="radius" type="number" value="4" min="1" max="15" step="1" />
+          </label>
+          <button id="go" class="primary">השווה</button>
+        </div>
+
+        <div class="basket">
+          <div class="basket-head">
+            <h2>הסל שלי</h2>
+            <input id="filter" class="filter" type="search" placeholder="סינון מוצרים…" />
+          </div>
+          <div id="catalog" class="catalog" role="group" aria-label="קטלוג מוצרים"></div>
+          <div class="basket-foot">
+            <span id="basketCount">0 מוצרים</span>
+            <button id="clear" class="ghost">נקה</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="status" class="status" hidden></section>
+      <section id="summary" class="summary" hidden></section>
+      <section id="results" class="results"></section>
+    </main>
+
+    <footer class="wrap footer">
+      <span>נתונים: פורטלי שקיפות המחירים של הרשתות · גיאוקוד: OpenStreetMap Nominatim</span>
+    </footer>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

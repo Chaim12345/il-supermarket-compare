@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DB_PATH: /data/prices.db
+      SELF_REFRESH: "1"
+    volumes:
+      - prices:/data
+    restart: unless-stopped
+
+volumes:
+  prices:

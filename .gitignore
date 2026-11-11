@@ -1,0 +1,7 @@
+node_modules/
+dist/
+data/
+bin/
+.vercel/
+.wrangler/
+*.log

@@ -1,0 +1,19 @@
+# Render blueprint: one web service with a persistent disk for the SQLite file.
+services:
+  - type: web
+    name: il-supermarket-compare
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    healthCheckPath: /api/health
+    envVars:
+      - key: DB_PATH
+        value: /data/prices.db
+      - key: STATIC_DIR
+        value: /app/web/dist
+      - key: SELF_REFRESH
+        value: "1"
+    disk:
+      name: prices
+      mountPath: /data
+      sizeGB: 1
