@@ -119,8 +119,8 @@ process with a SQLite file. Two supported ways to use them:
 
 2. **GitHub Pages with data baked in.** The **Data refresh** workflow runs
    `cmd/ingest --snapshot web/public/data`, which writes `stores.json` and
-   `meta.json` into the built site. That mode has no live prices; it is useful as
-   a store map/directory and for the daily data update itself.
+   `meta.json` into the built site. That mode has no live prices: it shows the
+   catalogue and a notice, and it is what keeps the daily data update flowing.
 
 Cloudflare Workers/D1 cannot run this Go binary, so on Cloudflare use option 1
 (static UI on Pages, API elsewhere).
